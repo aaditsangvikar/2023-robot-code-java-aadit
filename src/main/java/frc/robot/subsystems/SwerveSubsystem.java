@@ -64,7 +64,7 @@ public class SwerveSubsystem extends SubsystemBase {
     private final NetworkTableUtils limelightTable = new NetworkTableUtils("limelight");
 
     // Convert Gyro angle to radians(-2pi to 2pi)
-    private double heading() {
+    public double heading() {
         return Units.degreesToRadians(-1 * (gyro.getAngle() + 180.0) % 360.0);
     }
 
@@ -100,6 +100,10 @@ public class SwerveSubsystem extends SubsystemBase {
     private final DoubleEntry frontleftpos = NetworkTableInstance.getDefault()
             .getTable("Swerve").getDoubleTopic("flpos").getEntry(frontLeft.getPosition().angle.getRadians());
 
+    private final DoubleEntry rearrightpos = NetworkTableInstance.getDefault()
+            .getTable("Swerve").getDoubleTopic("rrpos").getEntry(rearRight.getPosition().angle.getRadians());
+
+
     // Periodic
     @Override
     public void periodic() {
@@ -124,6 +128,7 @@ public class SwerveSubsystem extends SubsystemBase {
 
         frontrightpos.set(frontRight.getPosition().angle.getRadians());
         frontleftpos.set(frontLeft.getPosition().angle.getRadians());
+        rearrightpos.set(rearRight.getPosition().angle.getRadians());
 
         // Set Network Tables Telemetry
         actualTelemetry.set(new double[]{
